@@ -3,174 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <!-- Bootstrap 5 CSS -->
+    <title>Premium Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-color: #00d2ff;
+        }
+
         body {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            /* Deep midnight gradient */
+            background: radial-gradient(circle at top right, #1e3c72, #111);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: white;
         }
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: none;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.95);
-            overflow: hidden;
+
+        /* Container for the cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card-link {
             text-decoration: none;
-            color: inherit;
+            perspective: 1000px;
         }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            text-decoration: none;
-        }
-        .card-body {
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px 20px;
             text-align: center;
-            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
         }
-        .icon-circle {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
-            border-radius: 50%;
+
+        /* Animated border glow on hover */
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 24px;
+            padding: 2px; 
+            background: linear-gradient(45deg, transparent, var(--accent-color), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1rem;
-            transition: background 0.3s ease;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+            transition: transform 0.3s ease;
         }
-        .card:hover .icon-circle {
-            background: linear-gradient(45deg, #ff8e53, #ff6b6b);
+
+        .glass-card:hover .icon-box {
+            transform: rotate(-10deg) scale(1.1);
         }
-        .icon-circle i {
-            font-size: 2.5rem;
+
+        .icon-box i {
+            font-size: 2rem;
             color: white;
         }
+
         .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            color: #fff;
         }
+
         .card-text {
-            color: #666;
-            font-size: 0.9rem;
+            color: #aaa;
+            font-size: 0.85rem;
+            margin: 0;
         }
-        .container {
-            max-width: 1200px;
+
+        /* Floating Animation */
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
-        @media (max-width: 576px) {
-            .card {
-                margin-bottom: 1.5rem;
-            }
+
+        .float-anim {
+            animation: floating 4s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
         <div class="row g-4 justify-content-center">
-            <!-- Diet Card -->
-          <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                <a href="https://peterbgood.github.io/NutriGraph/" class="card">
-                    <div class="card-body">
-                        <div class="icon-circle">
-                           <i class="bi bi-apple"></i>   
+            
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="https://peterbgood.github.io/NutriGraph/" class="card-link">
+                    <div class="glass-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #ff6b6b, #ee0979);">
+                            <i class="bi bi-apple"></i>
                         </div>
                         <h5 class="card-title">Calories</h5>
-                        <p class="card-text">Calorie Counter</p>
+                        <p class="card-text">NutriGraph Tracker</p>
                     </div>
                 </a>
             </div>
-            <!-- Model Y Card -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                <a href="https://peterbgood.github.io/ModelY/" class="card">
-                    <div class="card-body">
-                        <div class="icon-circle">
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="https://peterbgood.github.io/ModelY/" class="card-link">
+                    <div class="glass-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #2193b0, #6dd5ed);">
                             <i class="bi bi-car-front-fill"></i>
                         </div>
                         <h5 class="card-title">Model Y</h5>
-                        <p class="card-text">Tesla Model Y info</p>
+                        <p class="card-text">Tesla Analytics</p>
                     </div>
                 </a>
             </div>
-            <!-- Model 3 Card -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                <a href="https://peterbgood.github.io/Model3/" class="card">
-                    <div class="card-body">
-                        <div class="icon-circle">
-                            <i class="bi bi-car-front-fill"></i>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="https://peterbgood.github.io/Model3/" class="card-link">
+                    <div class="glass-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #373B44, #4286f4);">
+                            <i class="bi bi-lightning-charge-fill"></i>
                         </div>
                         <h5 class="card-title">Model 3</h5>
-                        <p class="card-text">Tesla Model 3 info</p>
+                        <p class="card-text">Performance Data</p>
                     </div>
                 </a>
             </div>
-            <!-- Budget Card -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                <a href="https://peterbgood.github.io/fiscal-flow-ledger/" class="card">
-                    <div class="card-body">
-                        <div class="icon-circle">
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="https://peterbgood.github.io/fiscal-flow-ledger/" class="card-link">
+                    <div class="glass-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #11998e, #38ef7d);">
                             <i class="bi bi-wallet2"></i>
                         </div>
                         <h5 class="card-title">Budget</h5>
-                        <p class="card-text">Financial planning</p>
+                        <p class="card-text">Fiscal Flow Ledger</p>
                     </div>
                 </a>
             </div>
-            <!-- Mortgage Card -->
-                  <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                <a href="https://peterbgood.github.io/CareerArc-Firebase/" class="card">
-                    <div class="card-body">
-                        <div class="icon-circle">
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="https://peterbgood.github.io/CareerArc-Firebase/" class="card-link">
+                    <div class="glass-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #f12711, #f5af19);">
                             <i class="bi bi-briefcase"></i>
                         </div>
                         <h5 class="card-title">Job Tracker</h5>
-                        <p class="card-text">Next Career</p>
+                        <p class="card-text">Career Arc Arc</p>
                     </div>
                 </a>
             </div>
-        </div>
-    </div>
-            <!-- Proceeds Card -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                <a href="https://peterbgood.github.io/net-proceeds-analytics/" class="card">
-                    <div class="card-body">
-                        <div class="icon-circle">
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="https://peterbgood.github.io/net-proceeds-analytics/" class="card-link">
+                    <div class="glass-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #8E2DE2, #4A00E0);">
                             <i class="bi bi-cash-stack"></i>
                         </div>
                         <h5 class="card-title">Proceeds</h5>
-                        <p class="card-text">Financial proceeds info</p>
+                        <p class="card-text">Net Analytics</p>
                     </div>
                 </a>
             </div>
-           
-             
-            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                <a href="https://peterbgood.github.io/my-portfolio/" class="card">
-                    <div class="card-body">
-                        <div class="icon-circle">
-                            <i class="bi bi-briefcase"></i>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="https://peterbgood.github.io/my-portfolio/" class="card-link">
+                    <div class="glass-card">
+                        <div class="icon-box" style="background: linear-gradient(135deg, #DA22FF, #9733EE);">
+                            <i class="bi bi-person-badge"></i>
                         </div>
                         <h5 class="card-title">Portfolio</h5>
-                        <p class="card-text">My Portfolio</p>
+                        <p class="card-text">My Creative Work</p>
                     </div>
                 </a>
             </div>
+
         </div>
     </div>
 
-    <!-- Bootstrap 5 JS and Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
